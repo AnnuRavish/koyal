@@ -68,7 +68,7 @@ export default function ProductDetailPage() {
           payload: cartItem.id,
         });
       }
-      return;
+            quantity: 1,
     }
 
     setIsAddingToCart(true);
@@ -198,7 +198,7 @@ export default function ProductDetailPage() {
                   <img
                     src={image}
                     alt={`${product.name} ${index + 1}`}
-                    className="w-full h-full object-cover bg-gradient-to-br from-orange-100 to-orange-300"
+                    className="w-full h-full object-cover"
                   />
                 </button>
               ))}
@@ -283,33 +283,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Quantity */}
-            <div>
-              <h3 className="font-bold text-gray-900 mb-3 text-lg">Quantity:</h3>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center border-2 border-gray-300 rounded-lg">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-3 hover:bg-gray-100 transition-colors"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="px-6 py-3 font-bold text-lg">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="p-3 hover:bg-gray-100 transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-                {isInCart && (
-                  <div className="text-sm text-gray-600 bg-gray-100 px-3 py-2 rounded-lg">
-                    <span className="font-medium">In Cart: {cartQuantity}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
             {/* Add to Cart */}
             <div className="flex space-x-4">
               <button
@@ -327,11 +300,11 @@ export default function ProductDetailPage() {
               >
                 <div className={`transition-all duration-300 ${isAddingToCart ? 'animate-spin' : ''}`}>
                   {isInCart ? <X className="w-6 h-6" /> : <ShoppingCart className="w-6 h-6" />}
-                </div>
+            <div className="aspect-square relative overflow-hidden">
                 <span className="transition-all duration-300">
                   {isAddingToCart ? 'ADDING TO CART...' : isInCart ? 'REMOVE FROM CART' : 'ADD TO CART'}
                 </span>
-              </button>
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
               
               <button 
                 onClick={handleWishlistToggle}
