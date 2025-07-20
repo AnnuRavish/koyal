@@ -68,24 +68,23 @@ export default function ProductDetailPage() {
           payload: cartItem.id,
         });
       }
-            quantity: 1,
+    } else {
+      setIsAddingToCart(true);
+      
+      setTimeout(() => {
+        dispatch({
+          type: 'ADD_TO_CART',
+          payload: {
+            id: `${product.id}-${selectedSize}-${Date.now()}`,
+            productId: product.id,
+            quantity,
+            size: selectedSize,
+            description: product.description,
+          },
+        });
+        setIsAddingToCart(false);
+      }, 1000);
     }
-
-    setIsAddingToCart(true);
-    
-    setTimeout(() => {
-      dispatch({
-        type: 'ADD_TO_CART',
-        payload: {
-          id: `${product.id}-${selectedSize}-${Date.now()}`,
-          productId: product.id,
-          quantity,
-          size: selectedSize,
-          description: product.description,
-        },
-      });
-      setIsAddingToCart(false);
-    }, 1000);
   };
 
   const handleWishlistToggle = () => {
@@ -300,11 +299,11 @@ export default function ProductDetailPage() {
               >
                 <div className={`transition-all duration-300 ${isAddingToCart ? 'animate-spin' : ''}`}>
                   {isInCart ? <X className="w-6 h-6" /> : <ShoppingCart className="w-6 h-6" />}
-            <div className="aspect-square relative overflow-hidden">
+                </div>
                 <span className="transition-all duration-300">
                   {isAddingToCart ? 'ADDING TO CART...' : isInCart ? 'REMOVE FROM CART' : 'ADD TO CART'}
                 </span>
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+              </button>
               
               <button 
                 onClick={handleWishlistToggle}
