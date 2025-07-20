@@ -2,28 +2,34 @@ import React, { useState } from 'react';
 import { Search, ShoppingCart, User, Menu, X, LogOut, Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import logoImage from '../assests/logo2-Photoroom.png'; 
 
-export default function Header() {
+interface MenuItem {
+  name: string;
+  path: string;
+}
+
+const Header: React.FC = () => {
   const { state, dispatch } = useApp();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent): void => {
     e.preventDefault();
     navigate('/products');
   };
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     dispatch({ type: 'SET_CURRENT_USER', payload: null });
     setShowUserMenu(false);
     navigate('/');
   };
 
-  const cartItemCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
-  const wishlistCount = (state.wishlist ? state.wishlist.length : 0);
+  const cartItemCount: number = state.cart.reduce((sum: number, item) => sum + item.quantity, 0);
+  const wishlistCount: number = state.wishlist ? state.wishlist.length : 0;
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { name: 'HOME', path: '/' },
     { name: 'FACE', path: '/products?category=Face' },
     { name: 'BODY', path: '/products?category=Body' },
@@ -35,7 +41,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50 w-full">
+    <header className="bg-white text-black shadow-md sticky top-0 z-50 w-full">
       {/* Top Banner */}
       <div className="bg-black text-white py-2 px-4 text-sm w-full overflow-hidden">
         <div className="animate-marquee whitespace-nowrap">
@@ -52,59 +58,53 @@ export default function Header() {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo - Left Side */}
-          <div 
-            className="flex items-center space-x-3 cursor-pointer group"
+          <button 
             onClick={() => navigate('/')}
+            className="focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-lg transition-all"
+            aria-label="Navigate to homepage"
           >
-            <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-br from-teal-500 via-teal-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-2xl">
-                <span className="text-white font-black text-lg tracking-wider">F</span>
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse"></div>
-            </div>
-            <div>
-              <h1 className="text-2xl font-black bg-gradient-to-r from-gray-800 via-teal-600 to-blue-600 bg-clip-text text-transparent tracking-tight group-hover:scale-105 transition-transform duration-300">
-                FIXDERMA
-              </h1>
-              <p className="text-xs text-gray-600 font-medium opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                We Fix Your Skin ✨
-              </p>
-            </div>
-          </div>
+            <img 
+              src={logoImage} 
+              alt="Fixderma Logo"
+              className="h-12 transform transition-all duration-500 hover:scale-105 hover:shadow-lg"
+              width={160}
+              height={48}
+              loading="eager"
+            />
+          </button>
 
           {/* Right Side Elements */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 float-right pl-96">
             {/* Search Bar - Hidden on mobile */}
             <div className="hidden lg:block">
               <form onSubmit={handleSearch} className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-teal-100 to-blue-100 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <input
                   type="text"
                   placeholder="Search for products..."
                   value={state.searchQuery}
-                  onChange={(e) => dispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })}
-                  className="w-72 px-5 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-300 text-sm bg-white/80 backdrop-blur-sm transition-all duration-300 hover:border-teal-300 shadow-sm hover:shadow-md"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                    dispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })
+                  }
+                  className="w-72 px-5 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-300 text-sm bg-white backdrop-blur-sm transition-all duration-300 hover:border-gray-300 shadow-sm hover:shadow-md"
                 />
                 <button
                   type="submit"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-teal-500 transition-all duration-300 hover:scale-110"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-black transition-all duration-300 hover:scale-110"
                 >
                   <Search size={20} />
                 </button>
               </form>
             </div>
 
-
-
             {/* Wishlist Icon */}
             <div className="relative">
               <button 
                 onClick={() => navigate('/wishlist')}
-                className="relative p-3 text-gray-600 hover:text-red-500 transition-all duration-300 hover:bg-red-50 rounded-full group"
+                className="relative p-3 text-gray-600 hover:text-black transition-all duration-300 hover:bg-gray-100 rounded-full group"
               >
                 <Heart size={22} className="transform group-hover:scale-110 transition-transform duration-300" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse font-bold">
+                  <span className="absolute -top-1 -right-1 bg-gray-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                     {wishlistCount}
                   </span>
                 )}
@@ -115,16 +115,13 @@ export default function Header() {
             <div className="relative">
               <button
                 onClick={() => navigate('/cart')}
-                className="relative p-3 text-gray-600 hover:text-teal-500 transition-all duration-300 hover:bg-teal-50 rounded-full group"
+                className="relative p-3 text-gray-600 hover:text-black transition-all duration-300 hover:bg-gray-100 rounded-full group"
               >
                 <ShoppingCart size={22} className="transform group-hover:scale-110 transition-transform duration-300" />
                 {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center transition-all duration-500 ease-in hover:scale-110 font-bold shadow-lg">
+                  <span className="absolute -top-1 -right-1 bg-gray-800 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center transition-all duration-500 ease-in hover:scale-110 font-bold shadow-lg">
                     {cartItemCount}
                   </span>
-                )}
-                {cartItemCount > 0 && (
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-400 rounded-full animate-ping opacity-30"></div>
                 )}
               </button>
             </div>
@@ -133,24 +130,24 @@ export default function Header() {
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="relative p-3 text-gray-600 hover:text-teal-500 transition-all duration-300 hover:bg-teal-50 rounded-full group"
+                className="relative p-3 text-gray-600 hover:text-black transition-all duration-300 hover:bg-gray-100 rounded-full group"
               >
                 <div className="relative">
                   <User size={22} className="transform group-hover:scale-110 transition-transform duration-300" />
                   {state.currentUser && (
-                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-gray-800 rounded-full border-2 border-white"></div>
                   )}
                 </div>
               </button>
               
               {showUserMenu && (
-                <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 transform transition-all duration-300 animate-fadeInUp">
-                  <div className="absolute -top-2 right-6 w-4 h-4 bg-white border-l border-t border-gray-100 transform rotate-45"></div>
+                <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 transform transition-all duration-300 animate-fadeInUp">
+                  <div className="absolute -top-2 right-6 w-4 h-4 bg-white border-l border-t border-gray-200 transform rotate-45"></div>
                   {state.currentUser ? (
                     <>
-                      <div className="px-6 py-4 border-b bg-gradient-to-r from-teal-50 to-blue-50 rounded-t-2xl">
+                      <div className="px-6 py-4 border-b bg-gray-50 rounded-t-2xl">
                         <div className="flex items-center space-x-3">
-                          <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full flex items-center justify-center">
+                          <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
                             <span className="text-white font-bold text-lg">
                               {state.currentUser.name.charAt(0).toUpperCase()}
                             </span>
@@ -159,7 +156,7 @@ export default function Header() {
                             <p className="font-bold text-gray-800 text-lg">{state.currentUser.name}</p>
                             <p className="text-sm text-gray-600">{state.currentUser.email}</p>
                             {state.currentUser.isAdmin && (
-                              <span className="inline-block mt-1 px-3 py-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full font-bold animate-pulse">
+                              <span className="inline-block mt-1 px-3 py-1 bg-gray-800 text-white text-xs rounded-full font-bold">
                                 Admin
                               </span>
                             )}
@@ -183,9 +180,9 @@ export default function Header() {
                               navigate('/admin');
                               setShowUserMenu(false);
                             }}
-                            className="w-full text-left px-6 py-3 hover:bg-red-50 text-red-600 border-t flex items-center space-x-3"
+                            className="w-full text-left px-6 py-3 hover:bg-gray-100 text-gray-800 border-t flex items-center space-x-3"
                           >
-                            <div className="w-5 h-5 bg-red-500 rounded text-white text-xs flex items-center justify-center font-bold">A</div>
+                            <div className="w-5 h-5 bg-gray-800 rounded text-white text-xs flex items-center justify-center font-bold">A</div>
                             <span>Admin Dashboard</span>
                           </button>
                         )}
@@ -205,7 +202,7 @@ export default function Header() {
                           navigate('/login');
                           setShowUserMenu(false);
                         }}
-                        className="w-full bg-gradient-to-r from-teal-500 to-blue-500 text-white py-3 px-4 rounded-xl hover:from-teal-600 hover:to-blue-600 transition-all duration-300 font-bold"
+                        className="w-full bg-gray-800 text-white py-3 px-4 rounded-xl hover:bg-gray-700 transition-all duration-300 font-bold"
                       >
                         Login / Register
                       </button>
@@ -218,7 +215,7 @@ export default function Header() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-3 text-gray-600 hover:text-teal-500 transition-all duration-300 hover:bg-teal-50 rounded-full"
+              className="lg:hidden p-3 text-gray-600 hover:text-black transition-all duration-300 hover:bg-gray-100 rounded-full"
             >
               <div className="transform transition-transform duration-300">
                 {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -237,7 +234,7 @@ export default function Header() {
               <button
                 key={item.name}
                 onClick={() => navigate(item.path)}
-                className="text-sm font-bold text-gray-700 hover:text-teal-500 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-teal-50 transform hover:scale-105"
+                className="text-sm font-bold text-gray-800 hover:text-black px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-100 transform hover:scale-105"
               >
                 {item.name}
               </button>
@@ -246,14 +243,14 @@ export default function Header() {
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="lg:hidden py-4 space-y-2 bg-gradient-to-b from-white to-gray-50 animate-fadeInUp">
+            <div className="lg:hidden py-4 space-y-2 bg-white animate-fadeInUp">
               {/* Mobile Search */}
               <form onSubmit={handleSearch} className="px-4 py-3">
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="Search products..."
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl pl-12 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-300"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl pl-12 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-300"
                   />
                   <Search className="absolute left-4 top-3.5 text-gray-400" size={20} />
                 </div>
@@ -266,7 +263,7 @@ export default function Header() {
                     navigate(item.path);
                     setIsMenuOpen(false);
                   }}
-                  className="block w-full text-left px-6 py-3 hover:bg-teal-50 hover:text-teal-600 transition-all duration-300 font-medium"
+                  className="block w-full text-left px-6 py-3 hover:bg-gray-100 hover:text-black transition-all duration-300 font-medium"
                 >
                   {item.name}
                 </button>
@@ -277,4 +274,6 @@ export default function Header() {
       </nav>
     </header>
   );
-}
+};
+
+export default Header;

@@ -194,7 +194,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center space-x-2 mb-3">
           <button 
             onClick={handleWishlistToggle}
-            className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-300 ${
+            className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all duration-300 ${
               isInWishlist 
                 ? 'bg-red-500 text-white' 
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
