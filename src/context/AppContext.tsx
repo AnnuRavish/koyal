@@ -85,7 +85,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, categories: action.payload };
     case 'ADD_TO_CART':
       const existingItem = state.cart.find(item => 
-        item.productId === action.payload.productId && item.size === action.payload.size
+        item.productId === action.payload.productId
       );
       if (existingItem) {
         return {

@@ -60,11 +60,14 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     if (isInCart) {
-      // Remove from cart logic
-      dispatch({
-        type: 'REMOVE_FROM_CART',
-        payload: product.id, // Assuming payload is productId for removal
-      });
+      // Remove from cart logic - find the cart item and remove it
+      const cartItem = state.cart.find(item => item.productId === product.id);
+      if (cartItem) {
+        dispatch({
+          type: 'REMOVE_FROM_CART',
+          payload: cartItem.id,
+        });
+      }
       return;
     }
 
@@ -78,6 +81,7 @@ export default function ProductDetailPage() {
           productId: product.id,
           quantity,
           size: selectedSize,
+          description: product.description,
         },
       });
       setIsAddingToCart(false);
@@ -94,6 +98,10 @@ export default function ProductDetailPage() {
 
   const isInCart = state.cart.some((item: any) => item.productId === product.id);
   const isInWishlist = state.wishlist.includes(product.id);
+
+  // Get current cart item for this product to show quantity
+  const currentCartItem = state.cart.find(item => item.productId === product.id);
+  const cartQuantity = currentCartItem ? currentCartItem.quantity : 0;
 
   // Get related products (exclude current product)
   const relatedProducts = state.products
@@ -156,7 +164,7 @@ export default function ProductDetailPage() {
                 <img
                   src={productImages[currentImageIndex]}
                   alt={product.name}
-                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-contain hover:scale-110 transition-transform duration-500"
                 />
                 
                 {/* Image Navigation */}
@@ -294,6 +302,11 @@ export default function ProductDetailPage() {
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
+                {isInCart && (
+                  <div className="text-sm text-gray-600 bg-gray-100 px-3 py-2 rounded-lg">
+                    <span className="font-medium">In Cart: {cartQuantity}</span>
+                  </div>
+                )}
               </div>
             </div>
 
