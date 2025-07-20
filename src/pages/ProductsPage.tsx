@@ -67,10 +67,11 @@ export default function ProductsPage() {
   const categories = ['all', ...Array.from(new Set(state.products.map(p => p.category)))];
 
   return (
-    <div className="w-full bg-gray-50 min-h-screen">
+    <div className="w-full bg-gray-50 min-h-screen page-enter">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-center justify-between mb-8">
+        <ScrollReveal direction="down">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
             {selectedCategory === 'all' ? 'All Products' : selectedCategory}
           </h1>
@@ -107,11 +108,13 @@ export default function ProductsPage() {
               <option value="reviews">Most Reviews</option>
             </select>
           </div>
-        </div>
+          </div>
+        </ScrollReveal>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
-          <div className={`lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+          <ScrollReveal direction="left">
+            <div className={`lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-24">
               <h3 className="font-semibold text-gray-800 mb-4">Filters</h3>
               
@@ -171,17 +174,21 @@ export default function ProductsPage() {
                 Clear Filters
               </button>
             </div>
-          </div>
+            </div>
+          </ScrollReveal>
 
           {/* Products Grid */}
-          <div className="lg:w-3/4">
+          <ScrollReveal direction="right">
+            <div className="lg:w-3/4">
             <div className="mb-4 text-gray-600">
               Showing {filteredProducts.length} of {state.products.length} products
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ScrollReveal key={product.id} direction="up" delay={Math.random() * 300}>
+                  <ProductCard product={product} />
+                </ScrollReveal>
               ))}
             </div>
 
@@ -200,7 +207,8 @@ export default function ProductsPage() {
                 </button>
               </div>
             )}
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
 import CategoryCard from '../components/CategoryCard';
+import ScrollReveal from '../components/ScrollReveal';
 import { ChevronRight, ChevronLeft, Mail, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -108,9 +109,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className={`w-full bg-gray-50 overflow-hidden transition-all duration-1000 ease-in ${
-      isPageLoaded ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-4'
-    }`}>
+    <div className={`w-full bg-gray-50 overflow-hidden page-enter`}>
       {/* Hero Slider Section */}
       <section className="relative w-full h-[600px] overflow-hidden">
         {heroSlides.map((slide, index) => (
@@ -303,48 +302,51 @@ export default function HomePage() {
       </section>
 
       {/* Trending Products */}
-      <section className="py-20 bg-white w-full relative">
+      <ScrollReveal direction="up">
+        <section className="py-20 bg-white w-full relative">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl md:text-6xl font-black text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-12 tracking-tight">
-            TRENDING PRODUCTS
-          </h2>
+          <ScrollReveal direction="scale">
+            <h2 className="text-4xl md:text-6xl font-black text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-12 tracking-tight">
+              TRENDING PRODUCTS
+            </h2>
+          </ScrollReveal>
           
-          <div className="flex justify-center mb-12">
-            <div className="flex flex-wrap justify-center gap-4 bg-gray-100 rounded-full p-2">
-              {trendingCategories.map(label => (
-                <button
-                  key={label}
-                  onClick={() => setSelectedTrending(label)}
-                  className={
-                    (selectedTrending === label
-                      ? 'text-white bg-gray-900'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-white')+
-                    ' px-6 py-3 rounded-full font-bold transition-all duration-300'
-                  }
-                >
-                  {label}
-                </button>
-              ))}
+          <ScrollReveal direction="up">
+            <div className="flex justify-center mb-12">
+              <div className="flex flex-wrap justify-center gap-4 bg-gray-100 rounded-full p-2">
+                {trendingCategories.map(label => (
+                  <button
+                    key={label}
+                    onClick={() => setSelectedTrending(label)}
+                    className={
+                      (selectedTrending === label
+                        ? 'text-white bg-gray-900'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-white')+
+                      ' px-6 py-3 rounded-full font-bold transition-all duration-300'
+                    }
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {trendingProducts.map((product, index) => (
-              <div
+              <ScrollReveal
                 key={product.id}
-                className="animate-fadeInUp"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                direction="up"
+                delay={index * 150}
               >
                 <ProductCard product={product} />
-              </div>
+              </ScrollReveal>
             ))}
           </div>
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"> */}
-         
-          {/* </div> */}
           
         </div>
-      </section>
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

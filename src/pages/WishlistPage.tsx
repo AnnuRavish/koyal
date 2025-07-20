@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
+import ScrollReveal from '../components/ScrollReveal';
 import { Heart, ShoppingBag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +21,7 @@ export default function WishlistPage() {
 
   if (wishlistProducts.length === 0) {
     return (
-      <div className="w-full bg-gray-50 min-h-screen flex items-center justify-center">
+      <div className="w-full bg-gray-50 min-h-screen flex items-center justify-center page-enter">
         <div className="text-center animate-fadeInUp">
           <Heart className="w-32 h-32 text-gray-400 mx-auto mb-6" />
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Your wishlist is empty</h2>
@@ -37,12 +38,13 @@ export default function WishlistPage() {
   }
 
   return (
-    <div className="w-full bg-gray-50 min-h-screen">
+    <div className="w-full bg-gray-50 min-h-screen page-enter">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+        <ScrollReveal direction="down">
+          <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2 animate-fadeInUp">My Wishlist</h1>
-            <p className="text-gray-600 text-lg animate-fadeInUp">
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">My Wishlist</h1>
+            <p className="text-gray-600 text-lg">
               {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'} saved
             </p>
           </div>
@@ -62,17 +64,18 @@ export default function WishlistPage() {
               <span>Continue Shopping</span>
             </button>
           </div>
-        </div>
+          </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {wishlistProducts.map((product, index) => (
-            <div
+            <ScrollReveal
               key={product.id}
-              className="animate-fadeInUp"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              direction="up"
+              delay={index * 150}
             >
               <ProductCard product={product} />
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

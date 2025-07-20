@@ -348,23 +348,37 @@ export default function ProductDetailPage() {
         )}
 
         {/* All Products */}
-        <section className="mt-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-800">More Products</h2>
-            <button
-              onClick={() => navigate('/products')}
-              className="text-teal-600 hover:text-teal-800 font-bold flex items-center space-x-2 bg-teal-50 hover:bg-teal-100 px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
-            >
-              <span>View All Products</span>
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {allOtherProducts.map((otherProduct, index) => (
-              <div
-                key={otherProduct.id}
-                className="animate-fadeInUp"
-                style={{ animationDelay: `${index * 0.1}s` }}
+        <ScrollReveal direction="up">
+          <section className="mt-16">
+            <ScrollReveal direction="scale">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-bold text-gray-800">More Products</h2>
+                <button
+                  onClick={() => navigate('/products')}
+                  className="text-teal-600 hover:text-teal-800 font-bold flex items-center space-x-2 bg-teal-50 hover:bg-teal-100 px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
+                >
+                  <span>View All Products</span>
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </ScrollReveal>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {allOtherProducts.map((otherProduct, index) => (
+                <ScrollReveal
+                  key={otherProduct.id}
+                  direction="up"
+                  delay={index * 150}
+                >
+                  <ProductCard product={otherProduct} />
+                </ScrollReveal>
+              ))}
+            </div>
+          </section>
+        </ScrollReveal>
+      </div>
+    </div>
+  );
+}
               >
                 <ProductCard product={otherProduct} />
               </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
+import ScrollReveal from '../components/ScrollReveal';
 import { Minus, Plus, X, ShoppingBag, CreditCard, Package } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,7 +36,7 @@ export default function CartPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="w-full bg-gray-50 min-h-screen flex items-center justify-center">
+      <div className="w-full bg-gray-50 min-h-screen flex items-center justify-center page-enter">
         <div className="text-center animate-fadeInUp">
           <ShoppingBag className="w-32 h-32 text-gray-400 mx-auto mb-6" />
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Your cart is empty</h2>
@@ -52,19 +53,23 @@ export default function CartPage() {
   }
 
   return (
-    <div className="w-full bg-gray-50 min-h-screen">
+    <div className="w-full bg-gray-50 min-h-screen page-enter">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8 animate-fadeInUp">Shopping Cart</h1>
+        <ScrollReveal direction="down">
+          <h1 className="text-4xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
-          <div className="lg:col-span-2 space-y-4">
+          <ScrollReveal direction="left">
+            <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item, index) => (
-              <div 
+              <ScrollReveal
                 key={item.id} 
-                className="bg-white rounded-xl shadow-lg p-6 animate-fadeInUp hover:shadow-xl transition-all duration-300"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                direction="up"
+                delay={index * 100}
               >
+                <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center space-x-6">
                   <div className="relative">
                     <img
@@ -116,12 +121,15 @@ export default function CartPage() {
                     <X className="w-5 h-5" />
                   </button>
                 </div>
-              </div>
+                </div>
+              </ScrollReveal>
             ))}
-          </div>
+            </div>
+          </ScrollReveal>
 
           {/* Order Summary */}
-          <div className="bg-white rounded-xl shadow-lg p-6 h-fit animate-fadeInUp">
+          <ScrollReveal direction="right">
+            <div className="bg-white rounded-xl shadow-lg p-6 h-fit">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">Order Summary</h3>
             
             <div className="space-y-4">
@@ -179,7 +187,8 @@ export default function CartPage() {
             >
               Continue Shopping
             </button>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </div>
     </div>
